@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="0637fa58-a7d7-44b8-901c-9dd5399e9bea" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<salesforce:sfdc-config name="Salesforce_Config" doc:name="Salesforce Config" doc:id="71da8aa3-332b-45b4-a991-9b2ada4c3387" >
+		<salesforce:basic-connection username="sumith.singh0325@gmail.com" password="Rajpoot@2514" securityToken="EKRO2kkka3DxafJbEJEAQCq6" />
+	</salesforce:sfdc-config>
+	<http:listener-config name="HTTP_Listener_config2" doc:name="HTTP Listener config" doc:id="1cae8e8e-e3b6-4d70-bf7d-2fd0db28e8d6" >
+		<http:listener-connection host="0.0.0.0" port="8084" />
+	</http:listener-config>
+	<flow name="parsehtml_salesforceFlow1" doc:id="90fb9e19-bbf6-43e2-b9a3-d7d09fdb31fd" >
+		<http:listener doc:name="POST /employee" doc:id="61ec9b92-098a-4056-8f21-5e629677e52e" config-ref="HTTP_Listener_config2" path="/employee" allowedMethods="POST"/>
+		<set-payload value="#[payload]" doc:name="Set Payload" doc:id="b57e9a72-9275-4cd2-9326-661852e5454b" />
+		<parse-template doc:name="Parse Template" doc:id="e20af961-f4e7-403b-ba7a-8fc4c67e8c2f" >
+			<content >&lt;HTML&gt;
+
+&lt;BODY&gt;
+&lt;TABLE BORDER='1'&gt;
+
+&lt;TR&gt;
+&lt;TH&gt;First Name&lt;/TH&gt;
+&lt;TH&gt;Last Name&lt;/TH&gt;
+&lt;TH&gt;Phone&lt;/TH&gt;
+&lt;/TR&gt;
+
+&lt;TR&gt;
+&lt;TD&gt;#[payload.FirstName]&lt;/TD&gt;
+&lt;TD&gt;#[payload.LastName]&lt;/TD&gt;
+&lt;TD&gt;#[payload.Phone]&lt;/TD&gt;
+&lt;/TR&gt;
+
+&lt;/TABLE&gt;
+
+
+&lt;/BODY&gt;
+
+
+&lt;/HTML&gt;
+</content>
+		</parse-template>
+	</flow>
+</mule>
